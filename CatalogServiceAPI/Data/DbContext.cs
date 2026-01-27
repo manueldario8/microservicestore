@@ -26,7 +26,8 @@ namespace CatalogServiceAPI.Data
             .IsUnique();
 
             modelBuilder.Entity<Category>()
-            .Property(c => c.Id);
+            .Property(c => c.Id)
+            .HasPrecision(18, 2);
 
             // Products
             modelBuilder.Entity<Product>()

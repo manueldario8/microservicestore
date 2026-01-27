@@ -1,38 +1,71 @@
-﻿using CatalogServiceAPI.Entities.Models;
+﻿using CatalogServiceAPI.Data;
+using CatalogServiceAPI.Entities.Models;
 using CatalogServiceAPI.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace CatalogServiceAPI.Services
 {
-    public class ProviderService : IProviderRepository
+    public class ProviderService(CatalogDbContext context) : IProviderRepository
     {
-        public Task<Provider> CreateProviderAsync(Provider provider)
+        private readonly CatalogDbContext _context = context;
+
+
+        public async Task<Provider> CreateProviderAsync(Provider provider)
         {
-            throw new NotImplementedException();
+            await _context.Providers.AddAsync(provider);
+            await _context.SaveChangesAsync();
+            return provider;
         }
 
-        public Task<IEnumerable<Provider>> GetAllProvidersAsync()
+        public async Task<IEnumerable<Provider>> GetAllProvidersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Providers.ToListAsync();
         }
 
-        public Task<Provider?> GetProviderById(int id)
+        public async Task<Provider?> GetProviderById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Providers
+               .Include(p => p.Products)
+               .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Task<Provider> UpdateProviderAsync(Provider provider)
+        public async Task<Provider> UpdateProviderAsync(Provider provider, string newName, string newCode)
         {
-            throw new NotImplementedException();
+            var existing = await _context.Providers.FindAsync(provider.Id) ?? throw new InvalidOperationException($"Provider not found.");
+
+            existing.Name = newName;
+            existing.Code = newCode;
+            await _context.SaveChangesAsync();
+
+            //Keep maintance with the same code string
+            var codeInUse = await _context.Providers.AnyAsync(p => p.Code == existing.Code && p.Id != existing.Id);
+
+            if (codeInUse)
+                throw new InvalidOperationException($"The provider code '{existing.Code}' is already used.");
+
+            _context.Entry(existing).CurrentValues.SetValues(existing);
+            await _context.SaveChangesAsync();
+
+            return existing;
         }
 
-        public Task<bool> ToggleStatusProviderAsync(int id)
+        public async Task<bool> ToggleStatusProviderAsync(int id)
         {
-            throw new NotImplementedException();
+            var existing = await _context.Providers.FirstOrDefaultAsync(p => p.Id == id) ?? throw new InvalidOperationException($"Provider not found.");
+            existing.StatusActived = !existing.StatusActived;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task DeleteProviderAsync(int id)
+        public async Task DeleteProviderAsync(int id)
         {
-            throw new NotImplementedException();
+            var existing = await _context.Providers.FirstOrDefaultAsync(p => p.Id == id) ?? throw new InvalidOperationException($"Provider not found.");
+            if (existing != null)
+            {
+                _context.Providers.Remove(existing);
+                await _context.SaveChangesAsync();
+            }
         }     
         
     }

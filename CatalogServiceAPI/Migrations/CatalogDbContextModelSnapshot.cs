@@ -38,7 +38,7 @@ namespace CatalogServiceAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("CatalogServiceAPI.Entities.Models.Product", b =>
@@ -78,7 +78,7 @@ namespace CatalogServiceAPI.Migrations
                     b.HasIndex("ProviderCode", "ProductCode")
                         .IsUnique();
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("CatalogServiceAPI.Entities.Models.Provider", b =>
@@ -105,7 +105,7 @@ namespace CatalogServiceAPI.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("Providers");
+                    b.ToTable("Providers", (string)null);
                 });
 
             modelBuilder.Entity("CatalogServiceAPI.Entities.Models.Product", b =>
