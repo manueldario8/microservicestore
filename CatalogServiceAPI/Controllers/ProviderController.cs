@@ -55,8 +55,22 @@ namespace CatalogServiceAPI.Controllers
 
             try
             {
-                var updated = await _providerService.UpdateProviderAsync(id, provider.Name, provider.Code);
+                var updated = await _providerService.UpdateProviderAsync(id, provider.Name);
                 return Ok(updated);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("toggle/{id:int}")]
+        public async Task<IActionResult> ToggleStatusActived(int id)
+        {
+            try 
+            {
+                var toggled = await _providerService.ToggleStatusProviderAsync(id);
+                return Ok(toggled);
             }
             catch (InvalidOperationException ex)
             {

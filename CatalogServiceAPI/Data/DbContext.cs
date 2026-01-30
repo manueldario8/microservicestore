@@ -26,8 +26,7 @@ namespace CatalogServiceAPI.Data
             .IsUnique();
 
             modelBuilder.Entity<Category>()
-            .Property(c => c.Id)
-            .HasPrecision(18, 2);
+            .Property(c => c.Id);
 
             // Products
             modelBuilder.Entity<Product>()
@@ -44,7 +43,12 @@ namespace CatalogServiceAPI.Data
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.Category)
                 .WithMany(c => c.Products)
-                .HasForeignKey(p => p.Id);
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Price)
+                .HasPrecision(18, 2);
         }
 
 

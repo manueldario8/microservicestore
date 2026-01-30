@@ -35,12 +35,11 @@ namespace CatalogServiceAPI.Services
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Provider> UpdateProviderAsync(int id, string newName, string newCode)
+        public async Task<Provider> UpdateProviderAsync(int id, string newName)
         {
             var existing = await _context.Providers.FindAsync(id) ?? throw new InvalidOperationException("Provider not found.");
 
             existing.Name = newName;
-            existing.Code = newCode;
 
             await ValidateProviderAsync(existing, isUpdated: true);
 
@@ -67,6 +66,7 @@ namespace CatalogServiceAPI.Services
                 await _context.SaveChangesAsync();
             
         }
+
 
 
         private async Task ValidateProviderAsync(Provider provider, bool isUpdated)

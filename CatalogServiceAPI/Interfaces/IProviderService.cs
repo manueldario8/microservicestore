@@ -8,7 +8,7 @@ namespace CatalogServiceAPI.Interfaces
         Task <Provider> CreateProviderAsync(Provider provider);
         Task <IEnumerable<Provider>> GetAllProvidersAsync();
         Task <Provider?> GetProviderById(int id);
-        Task <Provider> UpdateProviderAsync(int id, string newName, string newCode);
+        Task <Provider> UpdateProviderAsync(int id, string newName);
         Task<bool> ToggleStatusProviderAsync(int id);
         Task DeleteProviderAsync(int id);
 

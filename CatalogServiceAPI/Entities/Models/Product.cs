@@ -15,6 +15,7 @@ namespace CatalogServiceAPI.Entities.Models
         public required decimal Price { get; set; }
         public required int Stock { get; set; }
         public bool StatusActive { get; set; } = true;
+        public int CategoryId { get; set; }
 
         [Display(Name = "Image")]
         public string? UrlPhoto { get; set; }
@@ -22,6 +23,8 @@ namespace CatalogServiceAPI.Entities.Models
 
         [JsonIgnore]
         public Provider Provider { get; set; } = null!;
+
+        [JsonIgnore]
         public Category Category { get; set; } = null!;
     }
 }

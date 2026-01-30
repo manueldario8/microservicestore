@@ -38,12 +38,18 @@ namespace CatalogServiceAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("CatalogServiceAPI.Entities.Models.Product", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -54,6 +60,7 @@ namespace CatalogServiceAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductCode")
@@ -75,10 +82,12 @@ namespace CatalogServiceAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("ProviderCode", "ProductCode")
                         .IsUnique();
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("CatalogServiceAPI.Entities.Models.Provider", b =>
@@ -105,15 +114,15 @@ namespace CatalogServiceAPI.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("Providers", (string)null);
+                    b.ToTable("Providers");
                 });
 
             modelBuilder.Entity("CatalogServiceAPI.Entities.Models.Product", b =>
                 {
                     b.HasOne("CatalogServiceAPI.Entities.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CatalogServiceAPI.Entities.Models.Provider", "Provider")

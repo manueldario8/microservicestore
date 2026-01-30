@@ -3,6 +3,7 @@ using CatalogServiceAPI.Interfaces;
 using CatalogServiceAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static CatalogServiceAPI.Entities.DTOs.ProductDTO;
 
 namespace CatalogServiceAPI.Controllers
 {
@@ -13,15 +14,23 @@ namespace CatalogServiceAPI.Controllers
         private readonly IProductService _productService = productService;
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] Product product)
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto dto)
         {
-            if (product == null)
-                return BadRequest();
+            var product = new Product
+            {
+                ProviderCode = dto.ProviderCode,
+                CategoryId = dto.CategoryId,
+                ProductCode = dto.ProductCode,
+                Name = dto.Name,
+                Description = dto.Description,
+                Price = dto.Price,
+                Stock = dto.Stock,
+                UrlPhoto = dto.UrlPhoto
+            };
 
             try
             {
                 var created = await _productService.CreateProductAsync(product);
-
                 return CreatedAtAction(nameof(GetProductById), new { id = created.Id }, created);
             }
             catch (InvalidOperationException ex)
@@ -29,6 +38,7 @@ namespace CatalogServiceAPI.Controllers
                 return Conflict(new { message = ex.Message });
             }
         }
+
 
 
         [HttpGet]

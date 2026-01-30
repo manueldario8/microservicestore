@@ -97,6 +97,20 @@ namespace CatalogServiceAPI.Services
             if (product.Price <= 0)
                 throw new InvalidOperationException("Price must be greater than zero.");
 
+
+            var providerExists = await _context.Providers
+                .AnyAsync(p => p.Code == product.ProviderCode);
+            if (!providerExists)
+                throw new InvalidOperationException("Provider does not exist.");
+
+
+            var categoryExists = await _context.Categories
+                .AnyAsync(c => c.Id == product.CategoryId);
+
+            if (!categoryExists)
+                throw new InvalidOperationException("Category does not exist.");
+
+
             var codeInUse = await _context.Products.AnyAsync(p =>
                 p.ProductCode == product.ProductCode &&
                 p.ProviderCode == product.ProviderCode &&

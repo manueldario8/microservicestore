@@ -8,10 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// Swagger (Swashbuckle)
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 // DbContext
 builder.Services.AddDbContext<CatalogDbContext>(options =>
     options.UseSqlServer(
@@ -26,11 +22,6 @@ builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwagger();
-}
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

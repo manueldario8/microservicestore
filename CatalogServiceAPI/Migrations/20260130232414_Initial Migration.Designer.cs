@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatalogServiceAPI.Migrations
 {
     [DbContext(typeof(CatalogDbContext))]
-    [Migration("20260126014659_InitialMigration")]
+    [Migration("20260130232414_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -47,6 +47,12 @@ namespace CatalogServiceAPI.Migrations
             modelBuilder.Entity("CatalogServiceAPI.Entities.Models.Product", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -57,6 +63,7 @@ namespace CatalogServiceAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductCode")
@@ -77,6 +84,8 @@ namespace CatalogServiceAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ProviderCode", "ProductCode")
                         .IsUnique();
@@ -115,8 +124,8 @@ namespace CatalogServiceAPI.Migrations
                 {
                     b.HasOne("CatalogServiceAPI.Entities.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CatalogServiceAPI.Entities.Models.Provider", "Provider")
