@@ -1,13 +1,14 @@
 ﻿using CatalogServiceAPI.Entities.Models;
+using System.Numerics;
 
 namespace CatalogServiceAPI.Interfaces
 {
-    public interface IProviderRepository
+    public interface IProviderService
     {
         Task <Provider> CreateProviderAsync(Provider provider);
         Task <IEnumerable<Provider>> GetAllProvidersAsync();
         Task <Provider?> GetProviderById(int id);
-        Task <Provider> UpdateProviderAsync(Provider provider, string newName, string newCode);
+        Task <Provider> UpdateProviderAsync(int id, string newName, string newCode);
         Task<bool> ToggleStatusProviderAsync(int id);
         Task DeleteProviderAsync(int id);
 

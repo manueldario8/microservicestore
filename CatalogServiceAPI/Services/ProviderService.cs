@@ -6,13 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CatalogServiceAPI.Services
 {
-    public class ProviderService(CatalogDbContext context) : IProviderRepository
+    public class ProviderService(CatalogDbContext context) : IProviderService
     {
         private readonly CatalogDbContext _context = context;
 
 
         public async Task<Provider> CreateProviderAsync(Provider provider)
         {
+            await ValidateProviderAsync(provider, isUpdated: false);
+
             await _context.Providers.AddAsync(provider);
             await _context.SaveChangesAsync();
             return provider;
@@ -20,53 +22,66 @@ namespace CatalogServiceAPI.Services
 
         public async Task<IEnumerable<Provider>> GetAllProvidersAsync()
         {
-            return await _context.Providers.ToListAsync();
+            return await _context.Providers
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<Provider?> GetProviderById(int id)
         {
             return await _context.Providers
-               .Include(p => p.Products)
-               .FirstOrDefaultAsync(p => p.Id == id);
+                .AsNoTracking()
+                .Include(p => p.Products)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Provider> UpdateProviderAsync(Provider provider, string newName, string newCode)
+        public async Task<Provider> UpdateProviderAsync(int id, string newName, string newCode)
         {
-            var existing = await _context.Providers.FindAsync(provider.Id) ?? throw new InvalidOperationException($"Provider not found.");
+            var existing = await _context.Providers.FindAsync(id) ?? throw new InvalidOperationException("Provider not found.");
 
             existing.Name = newName;
             existing.Code = newCode;
+
+            await ValidateProviderAsync(existing, isUpdated: true);
+
             await _context.SaveChangesAsync();
-
-            //Keep maintance with the same code string
-            var codeInUse = await _context.Providers.AnyAsync(p => p.Code == existing.Code && p.Id != existing.Id);
-
-            if (codeInUse)
-                throw new InvalidOperationException($"The provider code '{existing.Code}' is already used.");
-
-            _context.Entry(existing).CurrentValues.SetValues(existing);
-            await _context.SaveChangesAsync();
-
             return existing;
         }
 
+
         public async Task<bool> ToggleStatusProviderAsync(int id)
         {
-            var existing = await _context.Providers.FirstOrDefaultAsync(p => p.Id == id) ?? throw new InvalidOperationException($"Provider not found.");
+            var existing = await _context.Providers.FindAsync(id) ?? throw new InvalidOperationException($"Provider not found.");
+
             existing.StatusActived = !existing.StatusActived;
+
             await _context.SaveChangesAsync();
-            return true;
+            return existing.StatusActived;
         }
 
         public async Task DeleteProviderAsync(int id)
         {
-            var existing = await _context.Providers.FirstOrDefaultAsync(p => p.Id == id) ?? throw new InvalidOperationException($"Provider not found.");
-            if (existing != null)
-            {
+            var existing = await _context.Providers.FindAsync(id) ?? throw new InvalidOperationException($"Provider not found.");
+            
                 _context.Providers.Remove(existing);
                 await _context.SaveChangesAsync();
-            }
-        }     
-        
+            
+        }
+
+
+        private async Task ValidateProviderAsync(Provider provider, bool isUpdated)
+        {
+            if (string.IsNullOrWhiteSpace(provider.Name)) throw new InvalidOperationException("The field 'name' cannot be empty");
+            if (string.IsNullOrWhiteSpace(provider.Code)) throw new InvalidOperationException("The field 'code' cannot be empty");
+
+            var codeInUse = await _context.Providers.AnyAsync(p => p.Code.ToLower() == provider.Code.ToLower() && (!isUpdated || p.Id != provider.Id));
+
+
+            if (codeInUse)
+                throw new InvalidOperationException(
+                    $"The provider code '{provider.Code}' is already used.");
+        }
+
+
     }
 }

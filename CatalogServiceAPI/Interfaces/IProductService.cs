@@ -2,7 +2,7 @@
 
 namespace CatalogServiceAPI.Interfaces
 {
-    public interface IProductRepository
+    public interface IProductService
     {
         Task<Product> CreateProductAsync(Product product);
         Task<IEnumerable<Product>> GetAllProductsAsync();
