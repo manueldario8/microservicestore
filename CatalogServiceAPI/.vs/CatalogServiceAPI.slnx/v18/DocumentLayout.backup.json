@@ -3,12 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\data\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:data\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\interfaces\\iproductservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:interfaces\\iproductservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\entities\\dtos\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:entities\\dtos\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\services\\providerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:services\\providerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\controllers\\providercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:controllers\\providercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +34,84 @@
       "DocumentGroups": [
         {
           "DockedWidth": 256,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DbContext.cs",
-              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Data\\DbContext.cs",
-              "RelativeDocumentMoniker": "Data\\DbContext.cs",
-              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Data\\DbContext.cs",
-              "RelativeToolTip": "Data\\DbContext.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAAADIAAAAlAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "ProviderService.cs",
+              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Services\\ProviderService.cs",
+              "RelativeDocumentMoniker": "Services\\ProviderService.cs",
+              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Services\\ProviderService.cs",
+              "RelativeToolTip": "Services\\ProviderService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAACUAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-30T23:23:45.728Z",
+              "WhenOpened": "2026-01-31T03:29:01.888Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProductDTO.cs",
+              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Entities\\DTOs\\ProductDTO.cs",
+              "RelativeDocumentMoniker": "Entities\\DTOs\\ProductDTO.cs",
+              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Entities\\DTOs\\ProductDTO.cs",
+              "RelativeToolTip": "Entities\\DTOs\\ProductDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-31T03:19:56.332Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IProductService.cs",
+              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Interfaces\\IProductService.cs",
+              "RelativeDocumentMoniker": "Interfaces\\IProductService.cs",
+              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Interfaces\\IProductService.cs",
+              "RelativeToolTip": "Interfaces\\IProductService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-31T03:15:31.73Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ProductService.cs",
+              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Services\\ProductService.cs",
+              "RelativeDocumentMoniker": "Services\\ProductService.cs",
+              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Services\\ProductService.cs",
+              "RelativeToolTip": "Services\\ProductService.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAowA8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-31T03:15:23.762Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-01-30T23:22:03.601Z",
+              "Title": "ProductController.cs",
+              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Controllers\\ProductController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ProductController.cs",
+              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Controllers\\ProductController.cs",
+              "RelativeToolTip": "Controllers\\ProductController.cs",
+              "ViewState": "AgIAAEcAAAAAAAAAAAAowE4AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-31T02:50:55.58Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ProviderController.cs",
+              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Controllers\\ProviderController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ProviderController.cs",
+              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Controllers\\ProviderController.cs",
+              "RelativeToolTip": "Controllers\\ProviderController.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAgwDEAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-31T03:14:12.298Z",
               "EditorCaption": ""
             }
           ]

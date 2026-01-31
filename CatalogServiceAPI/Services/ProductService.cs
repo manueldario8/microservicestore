@@ -1,4 +1,5 @@
 ﻿using CatalogServiceAPI.Data;
+using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Entities.Models;
 using CatalogServiceAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -37,12 +38,18 @@ namespace CatalogServiceAPI.Services
                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Product> UpdateProductAsync(Product product)
+        public async Task<Product> UpdateProductAsync(int id, UpdateProductDto dto)
         {
             var existing = await _context.Products
-                .FindAsync(product.Id)?? throw new InvalidOperationException("Product not found.");
+                .FirstOrDefaultAsync(p=>p.Id == id)?? throw new InvalidOperationException("Product not found.");
 
-            await ValidateProductAsync(product, isUpdate: true);
+            existing.Name = dto.Name;
+            existing.Description = dto.Description;
+            existing.Price = dto.Price;
+            existing.Stock = dto.Stock;
+            existing.UrlPhoto = dto.UrlPhoto;
+
+            await ValidateProductAsync(existing, isUpdate: true);
 
             await _context.SaveChangesAsync();
 
@@ -50,14 +57,14 @@ namespace CatalogServiceAPI.Services
         }
 
 
-        public async Task<Product?> GetProductByCodes(string providerCode, string productCode)
+        public async Task<Product?> GetProductByCodesAsync(string providerCode, string productCode)
         {
             return await _context.Products
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.ProviderCode == providerCode && p.ProductCode == productCode);
         }
 
-        public async Task<bool> ToggleStatusProduct(int id)
+        public async Task<bool> ToggleStatusProductAsync(int id)
         {
             var product = await _context.Products.FindAsync(id) ?? throw new InvalidOperationException($"Product not found");
 

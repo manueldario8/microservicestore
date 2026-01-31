@@ -1,4 +1,5 @@
-﻿using CatalogServiceAPI.Entities.Models;
+﻿using CatalogServiceAPI.Entities.DTOs;
+using CatalogServiceAPI.Entities.Models;
 
 namespace CatalogServiceAPI.Interfaces
 {
@@ -6,11 +7,11 @@ namespace CatalogServiceAPI.Interfaces
     {
         Task<Product> CreateProductAsync(Product product);
         Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<Product?> GetProductByCodes(string ProviderCode, string ProductCode);
+        Task<Product?> GetProductByCodesAsync(string ProviderCode, string ProductCode);
         Task<Product?> GetProductById(int id);
-        Task<Product> UpdateProductAsync(Product product);
+        Task<Product> UpdateProductAsync(int id, UpdateProductDto dto);
         Task UpdateStockAsync(int id, int quantityDelta);
-        Task<bool> ToggleStatusProduct(int id);
+        Task<bool> ToggleStatusProductAsync(int id);
         Task DeleteProductAsync(int id);
         
     }

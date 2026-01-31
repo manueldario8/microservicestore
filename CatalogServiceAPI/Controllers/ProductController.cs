@@ -1,9 +1,7 @@
-﻿using CatalogServiceAPI.Entities.Models;
+﻿using CatalogServiceAPI.Entities.DTOs;
+using CatalogServiceAPI.Entities.Models;
 using CatalogServiceAPI.Interfaces;
-using CatalogServiceAPI.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static CatalogServiceAPI.Entities.DTOs.ProductDTO;
 
 namespace CatalogServiceAPI.Controllers
 {
@@ -40,7 +38,6 @@ namespace CatalogServiceAPI.Controllers
         }
 
 
-
         [HttpGet]
         public async Task<IActionResult> GetAllProducts() 
         {
@@ -58,16 +55,40 @@ namespace CatalogServiceAPI.Controllers
             return Ok(product);
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product)
+
+        [HttpGet("{providerCode}/{productCode}")]
+        public async Task<IActionResult> GetProductByCodes(string providerCode, string productCode)
         {
+            var product = await _productService.GetProductByCodesAsync(providerCode, productCode);
+
             if (product == null)
-                return BadRequest();
+                return NotFound();
+
+            return Ok(product);
+
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] UpdateProductDto dto)
+        {
 
             try
             {
-                var updated = await _productService.UpdateProductAsync(product);
+                var updated = await _productService.UpdateProductAsync(id, dto);
                 return Ok(updated);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("toggle/{id:int}")]
+        public async Task<IActionResult> ToggleProductStatus(int id)
+        {
+            try
+            {
+                var toggled = await _productService.ToggleStatusProductAsync(id);
+                return Ok(toggled);
             }
             catch (InvalidOperationException ex)
             {
