@@ -12,15 +12,31 @@ namespace CatalogServiceAPI.Services
         private readonly CatalogDbContext _context = context;
 
 
-        public async Task<Product> CreateProductAsync(Product product)
+        public async Task<GetProductToListByAdminDto> CreateProductAsync(CreateProductDto dto)
         {
 
-            await ValidateProductAsync(product, isUpdate: false);
+            await ValidateProductToCreateAsync(dto);
+            var product = new Product { 
+                ProviderCode = dto.ProviderCode,
+                ProductCode = dto.ProductCode,
+                CategoryId = dto.CategoryId,
+                Name = dto.Name,
+                Price = dto.Price,
+                Description = dto.Description,
+                Stock = dto.Stock,
+                UrlPhoto = dto.UrlPhoto
+            };
+
+            var category = await _context.Categories
+                .Where(c => c.Id == dto.CategoryId)
+                .Select(c => new GetCategorySimpleByClientDto(c.Name))
+                .FirstAsync();
+
 
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
 
-            return product;
+            return new GetProductToListByAdminDto(dto.ProviderCode, dto.ProductCode, category, dto.Name, dto.Price, dto.Stock);
 
         }
 
@@ -90,42 +106,56 @@ namespace CatalogServiceAPI.Services
         }
 
 
-        private async Task ValidateProductAsync(Product product, bool isUpdate)
+
+        //Internal functions
+        private async Task ValidateProductToCreateAsync(CreateProductDto dto)
         {
-            if (string.IsNullOrWhiteSpace(product.Name))
-                throw new InvalidOperationException("Product name is required.");
-
-            if (string.IsNullOrWhiteSpace(product.ProductCode))
-                throw new InvalidOperationException("Product code is required.");
-
-            if (string.IsNullOrWhiteSpace(product.ProviderCode))
+            if (string.IsNullOrWhiteSpace(dto.ProviderCode))
                 throw new InvalidOperationException("Provider code is required.");
 
-            if (product.Price <= 0)
+            if (string.IsNullOrWhiteSpace(dto.ProductCode))
+                throw new InvalidOperationException("Product code is required.");
+
+            if (string.IsNullOrWhiteSpace(dto.Name))
+                throw new InvalidOperationException("Product name is required.");
+
+            if (dto.Price <= 0)
                 throw new InvalidOperationException("Price must be greater than zero.");
 
 
             var providerExists = await _context.Providers
-                .AnyAsync(p => p.Code == product.ProviderCode);
+                .AnyAsync(p => p.Code == dto.ProviderCode);
             if (!providerExists)
                 throw new InvalidOperationException("Provider does not exist.");
 
 
             var categoryExists = await _context.Categories
-                .AnyAsync(c => c.Id == product.CategoryId);
+                .AnyAsync(c => c.Id == dto.CategoryId);
 
             if (!categoryExists)
                 throw new InvalidOperationException("Category does not exist.");
 
 
             var codeInUse = await _context.Products.AnyAsync(p =>
-                p.ProductCode == product.ProductCode &&
-                p.ProviderCode == product.ProviderCode &&
-                (!isUpdate || p.Id != product.Id));
+                p.ProductCode == dto.ProductCode &&
+                p.ProviderCode== dto.ProviderCode);
 
             if (codeInUse)
                 throw new InvalidOperationException(
-                    $"The product code '{product.ProductCode}' is already used for this provider.");
+                    $"The product code '{dto.ProductCode}' is already used for this provider.");
         }
+
+        private async Task ValidateProductToUpdateAsync(UpdateProductDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Name))
+                throw new InvalidOperationException("Product name is required.");
+
+            if (dto.Price <= 0)
+                throw new InvalidOperationException("Price must be greater than zero.");
+            if (dto.Stock < 0)
+                throw new InvalidOperationException("Stock must be greater or equal to zero.");
+           
+        }
+
     }
 }

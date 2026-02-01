@@ -1,16 +1,22 @@
-﻿using CatalogServiceAPI.Entities.Models;
+﻿using CatalogServiceAPI.Entities.DTOs;
+using CatalogServiceAPI.Entities.Models;
 
 namespace CatalogServiceAPI.Interfaces
 {
     public interface ICategoryService
     {
-        Task<Category> CreateCategoryAsync(Category category);
-        Task<IEnumerable<Category>> GetAllCategoriesAsync();
-        Task<Category?> GetCategoryByIdAsync(int id);
-        Task<Category> UpdateCategoryAsync(int id, string newName);
-        //Task<bool> ToggleStatusCatogorieAsync(int id);
-        Task DeleteCategoryAsync(int id);
-        
+        //To administrator
+        Task<GetCategorySimpleByAdminDto> CreateCategoryAsync(CreateCategoryDto dto);
+        Task<IEnumerable<GetCategorySimpleByAdminDto>> GetAllCategoriesByAdminAsync();
+        Task<GetCategoryWithProductsByAdminDto?> GetCategoryByAdminByIdAsync(int id);
+        Task<GetCategorySimpleByAdminDto> UpdateCategoryAsync(int id, UpdateCategoryDto dto);
+        Task DeleteCategoryByAdminAsync(int id);
+
+        //To clients
+
+        Task<IEnumerable<GetCategorySimpleByClientDto>> GetAllCategoriesByClientAsync();
+        Task<GetCategoryWithProductsByClientDto?> GetCategoryByClientByIdAsync(int id);
+
 
     }
 }

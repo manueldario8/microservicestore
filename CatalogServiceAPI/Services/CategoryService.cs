@@ -1,4 +1,5 @@
 ﻿using CatalogServiceAPI.Data;
+using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Entities.Models;
 using CatalogServiceAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,43 +11,62 @@ namespace CatalogServiceAPI.Services
     {
         private readonly CatalogDbContext _context = context;
 
-
-        public async Task<Category> CreateCategoryAsync(Category category)
+        //Tasks to Administrators
+        public async Task<GetCategorySimpleByAdminDto> CreateCategoryAsync(CreateCategoryDto dto)
         {
-            await ValidateCategoryAsync(category, isUpdated: false);
+            await ValidateCategoryAsync(dto.Name);
+
+
+            var category = new Category
+            {
+                Name = dto.Name
+            };
             await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
-            return category;
+
+            return new GetCategorySimpleByAdminDto(category.Id, category.Name);
         } 
 
-        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<GetCategorySimpleByAdminDto>> GetAllCategoriesByAdminAsync()
         {
             return await _context.Categories
-                .AsNoTracking()
-                .ToListAsync();
+            .AsNoTracking()
+            .Select(c => new GetCategorySimpleByAdminDto(c.Id,c.Name))
+            .ToListAsync();
         }
 
-        public async Task<Category?> GetCategoryByIdAsync(int id)
+        public async Task<GetCategoryWithProductsByAdminDto?> GetCategoryByAdminByIdAsync(int id)
         {
-            
+
             return await _context.Categories
                 .AsNoTracking()
-                .Include(p => p.Products)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .Where(c => c.Id == id)
+                .Select(c => new GetCategoryWithProductsByAdminDto(
+                    c.Name,
+                    c.Products.Select(p => new GetProductToSellDto(
+                        p.Provider.Code,
+                        p.ProductCode,
+                        p.Name,
+                        p.Price
+                    ))
+                ))
+                .FirstOrDefaultAsync();
         }
 
-        public async Task<Category> UpdateCategoryAsync(int id, string newName)
+        public async Task<GetCategorySimpleByAdminDto> UpdateCategoryAsync(int id, UpdateCategoryDto dto)
         {
             var existing = await _context.Categories.FindAsync(id) ?? throw new InvalidOperationException($"Category not found.");
-
-            existing.Name = newName;
-            await ValidateCategoryAsync(existing, isUpdated: true);
+            
+            await ValidateCategoryAsync(dto.Name, id);
+            
+            existing.Name = dto.Name;
 
             await _context.SaveChangesAsync();
-            return existing;
+
+            return new GetCategorySimpleByAdminDto(existing.Id, existing.Name);
         }
 
-        public async Task DeleteCategoryAsync(int id)
+        public async Task DeleteCategoryByAdminAsync(int id)
         {
             var existing = await _context.Categories.FindAsync(id) ?? throw new InvalidOperationException($"Category not found.");
             
@@ -56,18 +76,49 @@ namespace CatalogServiceAPI.Services
         }
 
 
-        private async Task ValidateCategoryAsync(Category category, bool isUpdated)
+        //Tasks to clients
+
+        public async Task<IEnumerable<GetCategorySimpleByClientDto>> GetAllCategoriesByClientAsync()
         {
-            if (string.IsNullOrWhiteSpace(category.Name)) throw new InvalidOperationException("The field 'name' cannot be empty");
+            return await _context.Categories
+            .AsNoTracking()
+            .Select(c => new GetCategorySimpleByClientDto(c.Name))
+            .ToListAsync();
+        }
 
-            var codeInUse = await _context.Categories.AnyAsync(p => p.Name.ToLower() == category.Name.ToLower() && (!isUpdated || p.Id != category.Id));
+        public async Task<GetCategoryWithProductsByClientDto?> GetCategoryByClientByIdAsync(int id)
+        {
 
-
-            if (codeInUse)
-                throw new InvalidOperationException(
-                    $"The name '{category.Name}' is already used.");
+            return await _context.Categories
+                .AsNoTracking()
+                .Where(c => c.Id == id)
+                .Select(c => new GetCategoryWithProductsByClientDto(
+                    c.Name,
+                    c.Products.Select(p => new GetProductToSellDto(
+                        p.Provider.Code,
+                        p.ProductCode,
+                        p.Name,
+                        p.Price
+                    ))
+                ))
+                .FirstOrDefaultAsync();
         }
 
 
+        //Internal functions
+
+        private async Task ValidateCategoryAsync(string name, int? categoryId = null)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new InvalidOperationException("The field 'name' cannot be empty");
+
+            var exists = await _context.Categories.AnyAsync(c =>
+                c.Name.ToLower() == name.ToLower() &&
+                (!categoryId.HasValue || c.Id != categoryId.Value));
+
+            if (exists)
+                throw new InvalidOperationException(
+                    $"The name '{name}' is already used.");
+        }
     }
 }

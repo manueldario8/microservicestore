@@ -5,14 +5,19 @@ namespace CatalogServiceAPI.Interfaces
 {
     public interface IProductService
     {
-        Task<Product> CreateProductAsync(Product product);
-        Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<Product?> GetProductByCodesAsync(string ProviderCode, string ProductCode);
-        Task<Product?> GetProductById(int id);
-        Task<Product> UpdateProductAsync(int id, UpdateProductDto dto);
+        //To administrators
+        Task<GetProductToListByAdminDto> CreateProductAsync(CreateProductDto dto);
+        Task<IEnumerable<GetProductToListByAdminDto>> GetAllProductsByAdminAsync();
+        Task<GetProductToSellDto?> GetProductByAdminByCodesAsync(string ProviderCode, string ProductCode);
+        Task<GetProductToListByAdminDto?> GetProductByAdminById(int id);
+        Task<GetProductToListByAdminDto> UpdateProductAsync(int id, UpdateProductDto dto);
         Task UpdateStockAsync(int id, int quantityDelta);
         Task<bool> ToggleStatusProductAsync(int id);
         Task DeleteProductAsync(int id);
+
+        //To clients
+        Task<IEnumerable<GetProductToListByClientDto>> GetAllProductByClient();
+        Task<GetProductToOrderClientDto?> GetProductByClientByIdAsync(string ProviderCode, string ProductCode);
         
     }
 }
