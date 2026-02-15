@@ -11,7 +11,7 @@ namespace CatalogServiceAPI.Services
     {
         private readonly CatalogDbContext _context = context;
 
-
+        /*Services to administrator*/
         public async Task<GetProductToListByAdminDto> CreateProductAsync(CreateProductDto dto)
         {
 
@@ -40,24 +40,42 @@ namespace CatalogServiceAPI.Services
 
         }
 
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task<IEnumerable<GetProductToListByAdminDto>> GetAllProductsByAdminAsync()
         {
             return await _context.Products
                 .AsNoTracking()
+                .Select(p => new GetProductToListByAdminDto(p.ProviderCode, p.ProductCode, new GetCategorySimpleByClientDto(
+                p.Category.Name
+            ), p.Name, p.Price, p.Stock))
                 .ToListAsync();
         }
 
-        public async Task<Product?> GetProductById(int id)
+        public async Task<GetProductToListByAdminDto?> GetProductByAdminById(int id)
         {
             return await _context.Products
                .AsNoTracking()
-               .FirstOrDefaultAsync(p => p.Id == id);
+               .Where(p => p.Id == id)
+               .Select(p => new GetProductToListByAdminDto(p.ProviderCode, p.ProductCode, new GetCategorySimpleByClientDto(
+                p.Category.Name), p.Name, p.Price, p.Stock))
+               .FirstOrDefaultAsync();
         }
-
-        public async Task<Product> UpdateProductAsync(int id, UpdateProductDto dto)
+        
+        public async Task<GetProductToSellDto?> GetProductByAdminByCodesAsync(string providerCode, string productCode)
         {
+            return await _context.Products
+                .AsNoTracking()
+                .Select(p => new GetProductToSellDto(p.ProviderCode, p.ProductCode, p.Name, p.Price))
+                .FirstOrDefaultAsync(p => p.ProviderCode == providerCode && p.ProductCode == productCode);
+        }
+        public async Task<GetProductToListByAdminDto> UpdateProductAsync(int id, UpdateProductDto dto)
+        {
+            await ValidateProductToUpdateAsync(dto);
+
             var existing = await _context.Products
-                .FirstOrDefaultAsync(p=>p.Id == id)?? throw new InvalidOperationException("Product not found.");
+                .Include(p => p.Category)
+                .Include(p => p.Provider)
+                .FirstOrDefaultAsync(p => p.Id == id)
+                ?? throw new InvalidOperationException("Product not found.");
 
             existing.Name = dto.Name;
             existing.Description = dto.Description;
@@ -65,19 +83,18 @@ namespace CatalogServiceAPI.Services
             existing.Stock = dto.Stock;
             existing.UrlPhoto = dto.UrlPhoto;
 
-            await ValidateProductAsync(existing, isUpdate: true);
-
             await _context.SaveChangesAsync();
 
-            return existing;
-        }
-
-
-        public async Task<Product?> GetProductByCodesAsync(string providerCode, string productCode)
-        {
-            return await _context.Products
-                .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.ProviderCode == providerCode && p.ProductCode == productCode);
+            return new GetProductToListByAdminDto(
+                existing.Provider.Code,
+                existing.ProductCode,
+                new GetCategorySimpleByClientDto(
+                    existing.Category.Name
+                ),
+                existing.Name,
+                existing.Price,
+                existing.Stock
+            );
         }
 
         public async Task<bool> ToggleStatusProductAsync(int id)
@@ -105,6 +122,25 @@ namespace CatalogServiceAPI.Services
             await _context.SaveChangesAsync();
         }
 
+
+        /*Service to clientside*/
+        public async Task<IEnumerable<GetProductToListByClientDto>> GetAllProductsByClientAsync()
+        {
+            return await _context.Products
+                .AsNoTracking()
+                .Select(p => new GetProductToListByClientDto(p.ProviderCode, p.ProductCode, new GetCategorySimpleByClientDto(
+                p.Category.Name
+            ), p.Name, p.Description, p.Price, p.UrlPhoto))
+                .ToListAsync();
+        }
+
+        public async Task<GetProductToOrderClientDto?> GetProductByClientByCodesAsync(string providerCode, string productCode)
+        {
+            return await _context.Products
+                .AsNoTracking()
+                .Select(p => new GetProductToOrderClientDto(p.ProviderCode, p.ProductCode, p.Name, p.Price))
+                .FirstOrDefaultAsync(p => p.ProviderCode == providerCode && p.ProductCode == productCode);
+        }
 
 
         //Internal functions

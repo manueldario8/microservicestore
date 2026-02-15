@@ -16,8 +16,8 @@ namespace CatalogServiceAPI.Interfaces
         Task DeleteProductAsync(int id);
 
         //To clients
-        Task<IEnumerable<GetProductToListByClientDto>> GetAllProductByClient();
-        Task<GetProductToOrderClientDto?> GetProductByClientByIdAsync(string ProviderCode, string ProductCode);
+        Task<IEnumerable<GetProductToListByClientDto>> GetAllProductsByClientAsync();
+        Task<GetProductToOrderClientDto?> GetProductByClientByCodesAsync(string ProviderCode, string ProductCode);
         
     }
 }
