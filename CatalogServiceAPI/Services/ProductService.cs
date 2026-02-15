@@ -12,7 +12,7 @@ namespace CatalogServiceAPI.Services
         private readonly CatalogDbContext _context = context;
 
         /*Services to administrator*/
-        public async Task<CreatedProductDto> CreateProductAsync(CreateProductDto dto)
+        public async Task<CreatedProductDto> CreateProductAsync(CreateProductDto dto, string? urlPhoto)
         {
 
             await ValidateProductToCreateAsync(dto);
@@ -24,7 +24,7 @@ namespace CatalogServiceAPI.Services
                 Price = dto.Price,
                 Description = dto.Description,
                 Stock = dto.Stock,
-                UrlPhoto = dto.UrlPhoto
+                UrlPhoto = urlPhoto
             };
 
             var category = await _context.Categories
@@ -71,9 +71,14 @@ namespace CatalogServiceAPI.Services
         public async Task<GetProductToSellDto?> GetProductByAdminByCodesAsync(string providerCode, string productCode)
         {
             return await _context.Products
-                .AsNoTracking()
-                .Select(p => new GetProductToSellDto(p.ProviderCode, p.ProductCode, p.Name, p.Price))
-                .FirstOrDefaultAsync(p => p.ProviderCode == providerCode && p.ProductCode == productCode);
+        .AsNoTracking()
+        .Where(p => p.ProviderCode == providerCode && p.ProductCode == productCode)
+        .Select(p => new GetProductToSellDto(
+            p.ProviderCode,
+            p.ProductCode,
+            p.Name,
+            p.Price))
+        .FirstOrDefaultAsync();
         }
         public async Task<GetProductToListByAdminDto> UpdateProductAsync(int id, UpdateProductDto dto)
         {
@@ -145,9 +150,14 @@ namespace CatalogServiceAPI.Services
         public async Task<GetProductToOrderClientDto?> GetProductByClientByCodesAsync(string providerCode, string productCode)
         {
             return await _context.Products
-                .AsNoTracking()
-                .Select(p => new GetProductToOrderClientDto(p.ProviderCode, p.ProductCode, p.Name, p.Price))
-                .FirstOrDefaultAsync(p => p.ProviderCode == providerCode && p.ProductCode == productCode);
+        .AsNoTracking()
+        .Where(p => p.ProviderCode == providerCode && p.ProductCode == productCode)
+        .Select(p => new GetProductToOrderClientDto(
+            p.ProviderCode,
+            p.ProductCode,
+            p.Name,
+            p.Price))
+        .FirstOrDefaultAsync();
         }
 
 

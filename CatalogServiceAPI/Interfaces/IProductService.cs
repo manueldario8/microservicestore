@@ -6,7 +6,7 @@ namespace CatalogServiceAPI.Interfaces
     public interface IProductService
     {
         //To administrators
-        Task<CreatedProductDto> CreateProductAsync(CreateProductDto dto);
+        Task<CreatedProductDto> CreateProductAsync(CreateProductDto dto, string? urlPhoto);
         Task<IEnumerable<GetProductToListByAdminDto>> GetAllProductsByAdminAsync();
         Task<GetProductToSellDto?> GetProductByAdminByCodesAsync(string ProviderCode, string ProductCode);
         Task<GetProductToListByAdminDto?> GetProductByAdminById(int id);

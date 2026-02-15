@@ -10,8 +10,8 @@
         string Name,               
         string? Description,                 
         decimal Price,      
-        int Stock,    
-        string? UrlPhoto);
+        int Stock,
+        IFormFile? Image);
 
     public record CreatedProductDto(
         int Id,

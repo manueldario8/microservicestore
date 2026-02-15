@@ -23,14 +23,14 @@ namespace CatalogServiceAPI.Services
             await _context.Providers.AddAsync(provider);
             await _context.SaveChangesAsync();
 
-            return new GetProviderCreatedDto(provider.Id,provider.Code,provider.Name);
+            return new GetProviderCreatedDto(provider.Id,provider.Name,provider.Code);
         }
 
         public async Task<IEnumerable<GetProviderSimpleDto>> GetAllProvidersAsync()
         {
             return await _context.Providers
                 .AsNoTracking()
-                .Select(p => new GetProviderSimpleDto(p.Code, p.Name))
+                .Select(p => new GetProviderSimpleDto(p.Id, p.Code, p.Name))
                 .ToListAsync();
         }
 
@@ -50,7 +50,7 @@ namespace CatalogServiceAPI.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<GetProviderSimpleDto> UpdateProviderAsync(int id, UpdateProviderDto dto)
+        public async Task<GetUpdatedProviderDto> UpdateProviderAsync(int id, UpdateProviderDto dto)
         {
             var existing = await _context.Providers.FindAsync(id) ?? throw new InvalidOperationException("Provider not found.");
 
@@ -60,7 +60,7 @@ namespace CatalogServiceAPI.Services
 
             await _context.SaveChangesAsync();
 
-            return new GetProviderSimpleDto(dto.Name, existing.Code);
+            return new GetUpdatedProviderDto(dto.Name, existing.Code);
         }
 
 

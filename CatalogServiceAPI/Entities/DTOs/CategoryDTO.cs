@@ -3,7 +3,6 @@
 
     //DTOs to administrators
     public record CreateCategoryDto(
-        int Id,
         string Name);
 
     public record UpdateCategoryDto(

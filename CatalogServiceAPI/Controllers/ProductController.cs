@@ -1,26 +1,35 @@
 ﻿using CatalogServiceAPI.Entities.DTOs;
-using CatalogServiceAPI.Entities.Models;
 using CatalogServiceAPI.Interfaces;
+using CatalogServiceAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatalogServiceAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController(IProductService productService) : ControllerBase
+    public class ProductController(IProductService productService, IImageService imageService) : ControllerBase
     {
         private readonly IProductService _productService = productService;
+        private readonly IImageService _imageService = imageService;
 
         /*Endpoints to be used by admins*/
-        [HttpPost]
+        [HttpPost("adm")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto dto)
         {
-            if (dto == null)
-                return BadRequest();
+            string? urlPhoto = null;
+
+            if (dto.Image is not null)
+            {
+                using var stream = dto.Image.OpenReadStream();
+                urlPhoto = await _imageService.UploadImage(
+                    stream,
+                    dto.Image.FileName
+                );
+            }
 
             try
             {
-                var created = await _productService.CreateProductAsync(dto);
+                var created = await _productService.CreateProductAsync(dto, urlPhoto);
                 return CreatedAtAction(nameof(GetProductById), new { id = created.Id }, created);
             }
             catch (InvalidOperationException ex)
@@ -35,7 +44,7 @@ namespace CatalogServiceAPI.Controllers
             return Ok(await _productService.GetAllProductsByAdminAsync());
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("adm/{id:int}")]
         public async Task<IActionResult> GetProductById(int id)
         {
             var product = await _productService.GetProductByAdminById(id);
@@ -58,7 +67,7 @@ namespace CatalogServiceAPI.Controllers
 
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("adm/{id:int}")]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] UpdateProductDto dto)
         {
 
@@ -72,7 +81,7 @@ namespace CatalogServiceAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("toggle/{id:int}")]
+        [HttpPut("adm/toggle/{id:int}")]
         public async Task<IActionResult> ToggleProductStatus(int id)
         {
             try
@@ -86,7 +95,7 @@ namespace CatalogServiceAPI.Controllers
             }
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("adm/{id:int}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try

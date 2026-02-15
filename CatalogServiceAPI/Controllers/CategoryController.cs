@@ -12,7 +12,7 @@ namespace CatalogServiceAPI.Controllers
         private readonly ICategoryService _categoryService = categoryService;
 
         /*Endpoints to be used by admins*/
-        [HttpPost]
+        [HttpPost("adm")]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto)
         {
             if (dto == null)
@@ -50,7 +50,7 @@ namespace CatalogServiceAPI.Controllers
             return Ok(category);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("adm/{id:int}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto dto)
         {
             if (dto == null)
@@ -67,7 +67,7 @@ namespace CatalogServiceAPI.Controllers
             }
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("adm/{id:int}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             try

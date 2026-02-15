@@ -12,10 +12,13 @@
     public record UpdateProviderDto(
         string Name);
 
+    public record GetUpdatedProviderDto(
+        string Code,
+        string Name);
     public record GetProviderSimpleDto(
+        int Id,
         string Name,
         string Code);
-
 
 
     public record GetProviderWithProductsDto(
