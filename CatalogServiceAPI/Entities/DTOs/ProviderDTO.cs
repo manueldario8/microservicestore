@@ -1,8 +1,11 @@
-﻿using CatalogServiceAPI.Entities.Models;
-
-namespace CatalogServiceAPI.Entities.DTOs
+﻿namespace CatalogServiceAPI.Entities.DTOs
 {
     public record CreateProviderDto(
+        string Name,
+        string Code);    
+
+    public record GetProviderCreatedDto(
+        int Id,
         string Name,
         string Code);
 
@@ -12,6 +15,8 @@ namespace CatalogServiceAPI.Entities.DTOs
     public record GetProviderSimpleDto(
         string Name,
         string Code);
+
+
 
     public record GetProviderWithProductsDto(
         string Name,

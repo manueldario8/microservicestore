@@ -16,17 +16,13 @@
     public record GetCategoryWithProductsByAdminDto(
         string Name,
         IEnumerable<GetProductToSellDto> Products);
-    
 
-    //DTOs to clients
-    
+    //DTOs to clients 
     public record GetCategorySimpleByClientDto(
         string Name);
 
     public record GetCategoryWithProductsByClientDto(
         string Name,
         IEnumerable<GetProductToSellDto> Products);
-
-    
 
 }

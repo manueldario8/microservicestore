@@ -3,7 +3,6 @@ using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Entities.Models;
 using CatalogServiceAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Numerics;
 
 namespace CatalogServiceAPI.Services
 {
@@ -15,7 +14,6 @@ namespace CatalogServiceAPI.Services
         public async Task<GetCategorySimpleByAdminDto> CreateCategoryAsync(CreateCategoryDto dto)
         {
             await ValidateCategoryAsync(dto.Name);
-
 
             var category = new Category
             {
@@ -37,7 +35,6 @@ namespace CatalogServiceAPI.Services
 
         public async Task<GetCategoryWithProductsByAdminDto?> GetCategoryByAdminByIdAsync(int id)
         {
-
             return await _context.Categories
                 .AsNoTracking()
                 .Where(c => c.Id == id)
@@ -71,13 +68,10 @@ namespace CatalogServiceAPI.Services
             var existing = await _context.Categories.FindAsync(id) ?? throw new InvalidOperationException($"Category not found.");
             
                 _context.Categories.Remove(existing);
-                await _context.SaveChangesAsync();
-            
+                await _context.SaveChangesAsync();        
         }
 
-
         //Tasks to clients
-
         public async Task<IEnumerable<GetCategorySimpleByClientDto>> GetAllCategoriesByClientAsync()
         {
             return await _context.Categories
@@ -88,7 +82,6 @@ namespace CatalogServiceAPI.Services
 
         public async Task<GetCategoryWithProductsByClientDto?> GetCategoryByClientByIdAsync(int id)
         {
-
             return await _context.Categories
                 .AsNoTracking()
                 .Where(c => c.Id == id)
@@ -103,7 +96,6 @@ namespace CatalogServiceAPI.Services
                 ))
                 .FirstOrDefaultAsync();
         }
-
 
         //Internal functions
 

@@ -1,28 +1,28 @@
-﻿using CatalogServiceAPI.Entities.Models;
+﻿using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace CatalogServiceAPI.Controllers
 {
-    
+
     [ApiController]
     [Route("api/[controller]")]
     public class CategoryController(ICategoryService categoryService) : ControllerBase
     {
         private readonly ICategoryService _categoryService = categoryService;
 
+        /*Endpoints to be used by admins*/
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] Category category)
+        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto)
         {
-            if (category == null)
+            if (dto == null)
                 return BadRequest();
 
             try
             {
-                var created = await _categoryService.CreateCategoryAsync(category);
+                var created = await _categoryService.CreateCategoryAsync(dto);
 
-                return CreatedAtAction(nameof(GetCategoryById), new { id = created.Id }, created);
+                return CreatedAtAction(nameof(GetCategoryByIdAdmin), new { id = created.Id }, created);
 
             }
             catch (InvalidOperationException ex)
@@ -32,18 +32,17 @@ namespace CatalogServiceAPI.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllCategories()
+        [HttpGet("adm")]
+        public async Task<IActionResult> GetAllCategoriesByAdmins()
         {
-            var categories = await _categoryService.GetAllCategoriesAsync();
+            var categories = await _categoryService.GetAllCategoriesByAdminAsync();
             return Ok(categories);
-            //return Ok(await _categoryService.GetAllCategoriesAsync());
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetCategoryById(int id) 
+        [HttpGet("adm/{id:int}")]
+        public async Task<IActionResult> GetCategoryByIdAdmin(int id)
         {
-            var category = await _categoryService.GetCategoryByIdAsync(id);
+            var category = await _categoryService.GetCategoryByAdminByIdAsync(id);
 
             if (category == null)
                 return NotFound();
@@ -51,16 +50,15 @@ namespace CatalogServiceAPI.Controllers
             return Ok(category);
         }
 
-
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category category)
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto dto)
         {
-            if (category == null)
+            if (dto == null)
                 return BadRequest();
 
             try
             {
-                var updated = await _categoryService.UpdateCategoryAsync(id, category.Name);
+                var updated = await _categoryService.UpdateCategoryAsync(id, dto);
                 return Ok(updated);
             }
             catch (InvalidOperationException ex)
@@ -69,14 +67,12 @@ namespace CatalogServiceAPI.Controllers
             }
         }
 
-
-
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             try
             {
-                await _categoryService.DeleteCategoryAsync(id);
+                await _categoryService.DeleteCategoryByAdminAsync(id);
                 return NoContent();
             }
             catch (InvalidOperationException ex)
@@ -85,12 +81,23 @@ namespace CatalogServiceAPI.Controllers
             }
         }
 
+        /*Endpoints to be used by clients*/
+        [HttpGet("cs")]
+        public async Task<IActionResult> GetAllCategoriesByClients()
+        {
+            var categories = await _categoryService.GetAllCategoriesByClientAsync();
+            return Ok(categories);
+        }
 
+        [HttpGet("cs/{id:int}")]
+        public async Task<IActionResult> GetCategoryByIdClient(int id)
+        {
+            var category = await _categoryService.GetCategoryByClientByIdAsync(id);
 
+            if (category == null)
+                return NotFound();
 
-
-
-
-
+            return Ok(category);
+        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using CatalogServiceAPI.Entities.DTOs;
-using CatalogServiceAPI.Entities.Models;
 
 namespace CatalogServiceAPI.Interfaces
 {
@@ -13,10 +12,7 @@ namespace CatalogServiceAPI.Interfaces
         Task DeleteCategoryByAdminAsync(int id);
 
         //To clients
-
         Task<IEnumerable<GetCategorySimpleByClientDto>> GetAllCategoriesByClientAsync();
         Task<GetCategoryWithProductsByClientDto?> GetCategoryByClientByIdAsync(int id);
-
-
     }
 }

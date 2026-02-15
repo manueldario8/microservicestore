@@ -1,6 +1,5 @@
-﻿using CatalogServiceAPI.Entities.Models;
+﻿using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Interfaces;
-using CatalogServiceAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatalogServiceAPI.Controllers
@@ -11,17 +10,17 @@ namespace CatalogServiceAPI.Controllers
     {
         private readonly IProviderService _providerService = providerService;
 
+        /*Endpoints to be used by admins*/
         [HttpPost]
-        public async Task<IActionResult> CreateProvider([FromBody] Provider provider) 
+        public async Task<IActionResult> CreateProvider([FromBody] CreateProviderDto dto) 
         {
-            if (provider == null)
+            if (dto == null)
                 return BadRequest();
 
             try
             {
-                var created = await _providerService.CreateProviderAsync(provider);
-
-                return CreatedAtAction(nameof(GetProviderById), new { id = created.Id }, created);
+                var created = await _providerService.CreateProviderAsync(dto);
+                return CreatedAtAction(nameof(GetProviderById), new { id = created.Id}, created);
             }
             catch (InvalidOperationException ex)
             {
@@ -39,7 +38,7 @@ namespace CatalogServiceAPI.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProviderById(int id)
         {
-            var provider = await _providerService.GetProviderById(id);
+            var provider = await _providerService.GetProviderByIdAsync(id);
 
             if (provider == null)
                 return NotFound();
@@ -48,14 +47,14 @@ namespace CatalogServiceAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateProvider(int id, [FromBody] Provider provider)
+        public async Task<IActionResult> UpdateProvider(int id, [FromBody] UpdateProviderDto dto)
         {
-            if (provider == null)
+            if (dto == null)
                 return BadRequest();
 
             try
             {
-                var updated = await _providerService.UpdateProviderAsync(id, provider.Name);
+                var updated = await _providerService.UpdateProviderAsync(id, dto);
                 return Ok(updated);
             }
             catch (InvalidOperationException ex)
@@ -78,7 +77,6 @@ namespace CatalogServiceAPI.Controllers
             }
         }
 
-
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteProvider(int id)
         {
@@ -92,13 +90,5 @@ namespace CatalogServiceAPI.Controllers
                 return NotFound(new { message = ex.Message });
             }
         }
-
-
-
-
-
-
-
-
     }
 }

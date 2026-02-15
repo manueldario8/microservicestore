@@ -2,7 +2,6 @@
 using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Entities.Models;
 using CatalogServiceAPI.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace CatalogServiceAPI.Services
@@ -11,8 +10,7 @@ namespace CatalogServiceAPI.Services
     {
         private readonly CatalogDbContext _context = context;
 
-
-        public async Task<GetProviderSimpleDto> CreateProviderAsync(CreateProviderDto dto)
+        public async Task<GetProviderCreatedDto> CreateProviderAsync(CreateProviderDto dto)
         {
             await ValidateProviderAsync(dto.Code, dto.Name);
 
@@ -25,7 +23,7 @@ namespace CatalogServiceAPI.Services
             await _context.Providers.AddAsync(provider);
             await _context.SaveChangesAsync();
 
-            return new GetProviderSimpleDto(dto.Code,dto.Name);
+            return new GetProviderCreatedDto(provider.Id,provider.Code,provider.Name);
         }
 
         public async Task<IEnumerable<GetProviderSimpleDto>> GetAllProvidersAsync()
@@ -36,7 +34,7 @@ namespace CatalogServiceAPI.Services
                 .ToListAsync();
         }
 
-        public async Task<GetProviderWithProductsDto?> GetProviderById(int id)
+        public async Task<GetProviderWithProductsDto?> GetProviderByIdAsync(int id)
         {
             return await _context.Providers
                 .AsNoTracking()
@@ -80,14 +78,12 @@ namespace CatalogServiceAPI.Services
         {
             var existing = await _context.Providers.FindAsync(id) ?? throw new InvalidOperationException($"Provider not found.");
             
-                _context.Providers.Remove(existing);
-                await _context.SaveChangesAsync();
-            
+            _context.Providers.Remove(existing);
+            await _context.SaveChangesAsync();  
         }
 
 
         //Internal functions
-
         private async Task ValidateProviderAsync(string code, string name, int? id = null)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new InvalidOperationException("The field 'name' cannot be empty");
@@ -100,7 +96,6 @@ namespace CatalogServiceAPI.Services
                 throw new InvalidOperationException(
                     $"The provider code '{code}' is already used.");
         }
-
 
     }
 }

@@ -12,7 +12,7 @@ namespace CatalogServiceAPI.Services
         private readonly CatalogDbContext _context = context;
 
         /*Services to administrator*/
-        public async Task<GetProductToListByAdminDto> CreateProductAsync(CreateProductDto dto)
+        public async Task<CreatedProductDto> CreateProductAsync(CreateProductDto dto)
         {
 
             await ValidateProductToCreateAsync(dto);
@@ -36,8 +36,16 @@ namespace CatalogServiceAPI.Services
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
 
-            return new GetProductToListByAdminDto(dto.ProviderCode, dto.ProductCode, category, dto.Name, dto.Price, dto.Stock);
-
+            return new CreatedProductDto(
+                product.Id,
+                product.ProviderCode,
+                product.ProductCode,
+                category,
+                product.Name,
+                product.Description,
+                product.Price,
+                product.Stock,
+                product.UrlPhoto);
         }
 
         public async Task<IEnumerable<GetProductToListByAdminDto>> GetAllProductsByAdminAsync()

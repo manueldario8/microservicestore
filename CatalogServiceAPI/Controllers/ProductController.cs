@@ -11,24 +11,16 @@ namespace CatalogServiceAPI.Controllers
     {
         private readonly IProductService _productService = productService;
 
+        /*Endpoints to be used by admins*/
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto dto)
         {
-            var product = new Product
-            {
-                ProviderCode = dto.ProviderCode,
-                CategoryId = dto.CategoryId,
-                ProductCode = dto.ProductCode,
-                Name = dto.Name,
-                Description = dto.Description,
-                Price = dto.Price,
-                Stock = dto.Stock,
-                UrlPhoto = dto.UrlPhoto
-            };
+            if (dto == null)
+                return BadRequest();
 
             try
             {
-                var created = await _productService.CreateProductAsync(product);
+                var created = await _productService.CreateProductAsync(dto);
                 return CreatedAtAction(nameof(GetProductById), new { id = created.Id }, created);
             }
             catch (InvalidOperationException ex)
@@ -37,17 +29,16 @@ namespace CatalogServiceAPI.Controllers
             }
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllProducts() 
+        [HttpGet("adm")]
+        public async Task<IActionResult> GetAllProductsByAdmins() 
         {
-            return Ok(await _productService.GetAllProductsAsync());
+            return Ok(await _productService.GetAllProductsByAdminAsync());
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProductById(int id)
         {
-            var product = await _productService.GetProductById(id);
+            var product = await _productService.GetProductByAdminById(id);
 
             if (product == null)
                 return NotFound();
@@ -55,11 +46,10 @@ namespace CatalogServiceAPI.Controllers
             return Ok(product);
         }
 
-
-        [HttpGet("{providerCode}/{productCode}")]
-        public async Task<IActionResult> GetProductByCodes(string providerCode, string productCode)
+        [HttpGet("adm/{providerCode}/{productCode}")]
+        public async Task<IActionResult> GetProductByCodesAdmin(string providerCode, string productCode)
         {
-            var product = await _productService.GetProductByCodesAsync(providerCode, productCode);
+            var product = await _productService.GetProductByAdminByCodesAsync(providerCode, productCode);
 
             if (product == null)
                 return NotFound();
@@ -108,6 +98,24 @@ namespace CatalogServiceAPI.Controllers
             {
                 return NotFound(new { message = ex.Message });
             }
+        }
+
+        /*Endpoints to be used by clients*/
+        [HttpGet("cs")]
+        public async Task<IActionResult> GetAllProductsByClients()
+        {
+            return Ok(await _productService.GetAllProductsByClientAsync());
+        }
+        [HttpGet("cs/{providerCode}/{productCode}")]
+        public async Task<IActionResult> GetProductByClientsByCodesAdmin(string providerCode, string productCode)
+        {
+            var product = await _productService.GetProductByAdminByCodesAsync(providerCode, productCode);
+
+            if (product == null)
+                return NotFound();
+
+            return Ok(product);
+
         }
     }
 }

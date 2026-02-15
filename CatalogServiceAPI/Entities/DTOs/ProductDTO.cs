@@ -13,6 +13,17 @@
         int Stock,    
         string? UrlPhoto);
 
+    public record CreatedProductDto(
+        int Id,
+        string ProviderCode,
+        string ProductCode,
+        GetCategorySimpleByClientDto Category,
+        string Name,
+        string? Description,
+        decimal Price,
+        int Stock,
+        string? UrlPhoto);
+
     public record UpdateProductDto(
         string Name,
         string? Description,
