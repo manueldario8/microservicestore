@@ -1,0 +1,9 @@
+Agregar X-Correlation-Id en headers (cliente + server)
+
+Log estructurado (preparado para producción)
+
+Medir tiempo de DB / services
+
+Refactor fino del ExceptionMiddleware
+
+Introducir Activity / OpenTelemetry (siguiente nivel)

@@ -28,6 +28,7 @@ builder.Services.AddScoped<IImageService, ImageService>();
 
 var app = builder.Build();
 
+app.UseMiddleware<TraceMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthorization();

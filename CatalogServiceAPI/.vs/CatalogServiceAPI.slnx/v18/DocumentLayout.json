@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\entities\\dtos\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:entities\\dtos\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\middleware\\exceptionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:middleware\\exceptionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|c:\\users\\manue\\onedrive\\desktop\\microservice\\catalogservice\\catalogserviceapi\\middleware\\tracemiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7245A722-1980-3C73-B950-881FC98DC872}|CatalogServiceAPI.csproj|solutionrelative:middleware\\tracemiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +27,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ProductService.cs",
-              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Services\\ProductService.cs",
-              "RelativeDocumentMoniker": "Services\\ProductService.cs",
-              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Services\\ProductService.cs",
-              "RelativeToolTip": "Services\\ProductService.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAQwDYAAAAlAAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-16T19:11:10.321Z",
+              "WhenOpened": "2026-02-17T02:23:08.475Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ProductDTO.cs",
-              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Entities\\DTOs\\ProductDTO.cs",
-              "RelativeDocumentMoniker": "Entities\\DTOs\\ProductDTO.cs",
-              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Entities\\DTOs\\ProductDTO.cs",
-              "RelativeToolTip": "Entities\\DTOs\\ProductDTO.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAQwBwAAAAXAAAAAAAAAA==",
+              "Title": "ExceptionMiddleware.cs",
+              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Middleware\\ExceptionMiddleware.cs",
+              "RelativeDocumentMoniker": "Middleware\\ExceptionMiddleware.cs",
+              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Middleware\\ExceptionMiddleware.cs",
+              "RelativeToolTip": "Middleware\\ExceptionMiddleware.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAABQAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-17T00:37:33.397Z",
+              "WhenOpened": "2026-02-17T02:09:44.803Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TraceMiddleware.cs",
+              "DocumentMoniker": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Middleware\\TraceMiddleware.cs",
+              "RelativeDocumentMoniker": "Middleware\\TraceMiddleware.cs",
+              "ToolTip": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\Middleware\\TraceMiddleware.cs",
+              "RelativeToolTip": "Middleware\\TraceMiddleware.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAgwCYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-17T02:08:52.059Z",
               "EditorCaption": ""
             }
           ]

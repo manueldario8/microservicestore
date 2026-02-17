@@ -27,5 +27,6 @@ Comportamiento raro... a chequear
 
 
  
-
+NOTAS: Para la parte de admin se le tienen que corregir los DTOs, pero eso lo haremos directamente con el frontend activo
+La parte de client no tiene IgnoreQueryFilters pero eso dependerá también de lo que quiera ignorar, provider, product o category
 
