@@ -1,0 +1,28 @@
+Prueba postman:
+Métodos y errores:
+Categorías:
+
+
+-POST creación: funciona
+-Error POST creación: nombre repetido, código 500, mensaje: "La categoría ... ya existe"
+-Errores de formulario al crear, código 500, no pueden estar vacíos y tiene sensitiveCase
+-GET para administradores: funciona
+
+-GET por ID: funciona (no tiene status actived)
+-Error GET por ID: ID no existe, código 404, mensaje "La categoría no existe"
+
+-PUT de nombre: funciona
+-Error al actualizar por nombre repetido: código 500, mensaje: "La categoría ... ya existe"
+-Quizás cambiar mensaje de error
+-Error al pasar ID erróneo: código 500, mensaje: "Error al actualizar categoría"
+-Cambiar mensaje
+
+-PUT de status: funciona
+-Error al pasar ID erróneo: código 404, mensaje: "No se encontró la categoría"
+
+-GET para usuarios: funciona
+-GET por ID para usuarios: funciona
+-Error por ID erróneo: código 404, mensaje: "No se encontró la categoría"
+
+NOTAS:
+Los GETs devuelven sus respectivos valores: TODAS las categorías para el admin, solo las ACTIVED para los usuarios
