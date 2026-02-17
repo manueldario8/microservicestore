@@ -1,0 +1,2 @@
+Los POST del authservice funcionaron bien, se crea y se recibe el token, también funciona el claim de los roles.
+Probé un solo controlador en general con el authorizate, ahora probaré cada endpoint dependiendo del user pero en el front

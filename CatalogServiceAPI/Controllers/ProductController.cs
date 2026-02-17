@@ -1,6 +1,7 @@
 ﻿using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Interfaces;
 using CatalogServiceAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatalogServiceAPI.Controllers
@@ -13,6 +14,7 @@ namespace CatalogServiceAPI.Controllers
         private readonly IImageService _imageService = imageService;
 
         /*Endpoints to be used by admins*/
+        [Authorize(Roles = "Admin")]
         [HttpPost("adm")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto dto)
         {
@@ -32,12 +34,14 @@ namespace CatalogServiceAPI.Controllers
             
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("adm")]
         public async Task<IActionResult> GetAllProductsByAdmins() 
         {
             return Ok(await _productService.GetAllProductsByAdminAsync());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("adm/{id:int}")]
         public async Task<IActionResult> GetProductById(int id)
         {
@@ -45,6 +49,7 @@ namespace CatalogServiceAPI.Controllers
             return Ok(product);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("adm/{providerCode}/{productCode}")]
         public async Task<IActionResult> GetProductByCodesAdmin(string providerCode, string productCode)
         {
@@ -52,6 +57,7 @@ namespace CatalogServiceAPI.Controllers
             return Ok(product);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("adm/{id:int}")]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] UpdateProductDto dto)
         {
@@ -59,6 +65,7 @@ namespace CatalogServiceAPI.Controllers
             return Ok(updated);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("adm/toggle/{id:int}")]
         public async Task<IActionResult> ToggleProductStatus(int id)
         {

@@ -1,5 +1,6 @@
 ﻿using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatalogServiceAPI.Controllers
@@ -12,6 +13,7 @@ namespace CatalogServiceAPI.Controllers
         private readonly ICategoryService _categoryService = categoryService;
 
         /*Endpoints to be used by admins*/
+        [Authorize(Roles = "Admin")]
         [HttpPost("adm")]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto)
         {
@@ -19,6 +21,7 @@ namespace CatalogServiceAPI.Controllers
             return CreatedAtAction(nameof(GetCategoryByIdAdmin), new { id = created.Id }, created);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("adm")]
         public async Task<IActionResult> GetAllCategoriesByAdmins()
         {
@@ -26,6 +29,7 @@ namespace CatalogServiceAPI.Controllers
             return Ok(categories);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("adm/{id:int}")]
         public async Task<IActionResult> GetCategoryByIdAdmin(int id)
         {
@@ -33,6 +37,7 @@ namespace CatalogServiceAPI.Controllers
             return Ok(category);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("adm/{id:int}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto dto)
         {
@@ -40,6 +45,7 @@ namespace CatalogServiceAPI.Controllers
             return Ok(updated);       
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("adm/toggle/{id:int}")]
         public async Task<IActionResult> ChangeCategoryStatus(int id)
         {

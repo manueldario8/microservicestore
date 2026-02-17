@@ -4,6 +4,7 @@
 
     public record AuthResponseDTO(
         string Token,
-        DateTime ExpiresAt
+        DateTime ExpiresAt,
+        string Role
     );
 }

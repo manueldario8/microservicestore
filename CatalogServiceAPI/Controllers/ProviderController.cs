@@ -1,11 +1,13 @@
 ﻿using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatalogServiceAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]/adm")]
+    [Authorize(Roles = "Admin")]
     public class ProviderController(IProviderService providerService) : ControllerBase
     {
         private readonly IProviderService _providerService = providerService;

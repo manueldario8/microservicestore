@@ -49,7 +49,7 @@ namespace AuthenticatorServiceAPI.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
+                new Claim(ClaimTypes.Role, ((Roles)user.Role).ToString())
             };
 
             var key = new SymmetricSecurityKey(
@@ -72,8 +72,9 @@ namespace AuthenticatorServiceAPI.Services
 
             return new AuthResponseDTO(
                 new JwtSecurityTokenHandler().WriteToken(token),
-                expires
-            );
+                expires, user.Role.ToString()); 
+        }
+            
         }
     }
-}
+
