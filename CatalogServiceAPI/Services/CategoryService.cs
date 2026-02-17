@@ -1,4 +1,5 @@
 ﻿using CatalogServiceAPI.Data;
+using CatalogServiceAPI.DomainExceptions;
 using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Entities.Models;
 using CatalogServiceAPI.Interfaces;
@@ -19,23 +20,26 @@ namespace CatalogServiceAPI.Services
             {
                 Name = dto.Name
             };
+
             await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
 
-            return new GetCategorySimpleByAdminDto(category.Id, category.Name);
+            return new GetCategorySimpleByAdminDto(category.Id, category.Name, category.StatusActived);
         } 
 
         public async Task<IEnumerable<GetCategorySimpleByAdminDto>> GetAllCategoriesByAdminAsync()
         {
             return await _context.Categories
             .AsNoTracking()
-            .Select(c => new GetCategorySimpleByAdminDto(c.Id,c.Name))
+            .IgnoreQueryFilters()
+            .Select(c => new GetCategorySimpleByAdminDto(c.Id,c.Name,c.StatusActived))
             .ToListAsync();
         }
 
         public async Task<GetCategoryWithProductsByAdminDto?> GetCategoryByAdminByIdAsync(int id)
         {
-            return await _context.Categories
+            
+            var category = await _context.Categories
                 .AsNoTracking()
                 .Where(c => c.Id == id)
                 .Select(c => new GetCategoryWithProductsByAdminDto(
@@ -47,12 +51,15 @@ namespace CatalogServiceAPI.Services
                         p.Price
                     ))
                 ))
-                .FirstOrDefaultAsync();
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync()??throw new NotFoundException("La categoria no existe");
+
+            return category;
         }
 
         public async Task<GetCategorySimpleByAdminDto> UpdateCategoryAsync(int id, UpdateCategoryDto dto)
         {
-            var existing = await _context.Categories.FindAsync(id) ?? throw new InvalidOperationException($"Category not found.");
+            var existing = await _context.Categories.FindAsync(id) ?? throw new NotFoundException("No se encontró una categoría con ese ID");
             
             await ValidateCategoryAsync(dto.Name, id);
             
@@ -60,15 +67,15 @@ namespace CatalogServiceAPI.Services
 
             await _context.SaveChangesAsync();
 
-            return new GetCategorySimpleByAdminDto(existing.Id, existing.Name);
+            return new GetCategorySimpleByAdminDto(existing.Id, existing.Name, existing.StatusActived);
         }
 
-        public async Task DeleteCategoryByAdminAsync(int id)
+        public async Task ToggleCategoryByAdminAsync(int id)
         {
-            var existing = await _context.Categories.FindAsync(id) ?? throw new InvalidOperationException($"Category not found.");
-            
-                _context.Categories.Remove(existing);
-                await _context.SaveChangesAsync();        
+            var existing = await _context.Categories.FindAsync(id) ?? throw new NotFoundException("No se encontró la categoría con ese ID");
+            existing.StatusActived = !existing.StatusActived;
+
+            await _context.SaveChangesAsync();        
         }
 
         //Tasks to clients
@@ -82,7 +89,7 @@ namespace CatalogServiceAPI.Services
 
         public async Task<GetCategoryWithProductsByClientDto?> GetCategoryByClientByIdAsync(int id)
         {
-            return await _context.Categories
+            var category = await _context.Categories
                 .AsNoTracking()
                 .Where(c => c.Id == id)
                 .Select(c => new GetCategoryWithProductsByClientDto(
@@ -94,23 +101,23 @@ namespace CatalogServiceAPI.Services
                         p.Price
                     ))
                 ))
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync()??throw new NotFoundException("La categoria no existe");
+            return category;
         }
 
         //Internal functions
-
         private async Task ValidateCategoryAsync(string name, int? categoryId = null)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new InvalidOperationException("The field 'name' cannot be empty");
+                throw new BusinessException("El nombre no puede estar vacío");
 
             var exists = await _context.Categories.AnyAsync(c =>
                 c.Name.ToLower() == name.ToLower() &&
                 (!categoryId.HasValue || c.Id != categoryId.Value));
 
             if (exists)
-                throw new InvalidOperationException(
-                    $"The name '{name}' is already used.");
+                throw new BusinessException(
+                    $"La categoría '{name}' ya existe.");
         }
     }
 }

@@ -8,7 +8,6 @@ namespace CatalogServiceAPI.Interfaces
         Task <IEnumerable<GetProviderSimpleDto>> GetAllProvidersAsync();
         Task <GetProviderWithProductsDto?> GetProviderByIdAsync(int id);
         Task <GetUpdatedProviderDto> UpdateProviderAsync(int id, UpdateProviderDto dto);
-        Task<bool> ToggleStatusProviderAsync(int id);
-        Task DeleteProviderAsync(int id);
+        Task ToggleStatusProviderAsync(int id);
     }
 }

@@ -26,16 +26,10 @@ namespace CatalogServiceAPI.Controllers
                     dto.Image.FileName
                 );
             }
-
-            try
-            {
-                var created = await _productService.CreateProductAsync(dto, urlPhoto);
-                return CreatedAtAction(nameof(GetProductById), new { id = created.Id }, created);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(new { message = ex.Message });
-            }
+            
+            var created = await _productService.CreateProductAsync(dto, urlPhoto);
+            return CreatedAtAction(nameof(GetProductById), new { id = created.Id }, created);
+            
         }
 
         [HttpGet("adm")]
@@ -48,10 +42,6 @@ namespace CatalogServiceAPI.Controllers
         public async Task<IActionResult> GetProductById(int id)
         {
             var product = await _productService.GetProductByAdminById(id);
-
-            if (product == null)
-                return NotFound();
-
             return Ok(product);
         }
 
@@ -59,43 +49,26 @@ namespace CatalogServiceAPI.Controllers
         public async Task<IActionResult> GetProductByCodesAdmin(string providerCode, string productCode)
         {
             var product = await _productService.GetProductByAdminByCodesAsync(providerCode, productCode);
-
-            if (product == null)
-                return NotFound();
-
             return Ok(product);
-
         }
 
         [HttpPut("adm/{id:int}")]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] UpdateProductDto dto)
         {
-
-            try
-            {
-                var updated = await _productService.UpdateProductAsync(id, dto);
-                return Ok(updated);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var updated = await _productService.UpdateProductAsync(id, dto);
+            return Ok(updated);
         }
+
         [HttpPut("adm/toggle/{id:int}")]
         public async Task<IActionResult> ToggleProductStatus(int id)
         {
-            try
-            {
-                var toggled = await _productService.ToggleStatusProductAsync(id);
-                return Ok(toggled);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            await _productService.ToggleStatusProductAsync(id);
+            return NoContent();
+
         }
 
-        [HttpDelete("adm/{id:int}")]
+        /*[HttpDelete("adm/{id:int}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try
@@ -107,7 +80,7 @@ namespace CatalogServiceAPI.Controllers
             {
                 return NotFound(new { message = ex.Message });
             }
-        }
+        }*/
 
         /*Endpoints to be used by clients*/
         [HttpGet("cs")]
@@ -115,14 +88,11 @@ namespace CatalogServiceAPI.Controllers
         {
             return Ok(await _productService.GetAllProductsByClientAsync());
         }
+
         [HttpGet("cs/{providerCode}/{productCode}")]
         public async Task<IActionResult> GetProductByClientsByCodesAdmin(string providerCode, string productCode)
         {
-            var product = await _productService.GetProductByAdminByCodesAsync(providerCode, productCode);
-
-            if (product == null)
-                return NotFound();
-
+            var product = await _productService.GetProductByClientByCodesAsync(providerCode, productCode);
             return Ok(product);
 
         }

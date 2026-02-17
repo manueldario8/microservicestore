@@ -9,7 +9,7 @@ namespace CatalogServiceAPI.Interfaces
         Task<IEnumerable<GetCategorySimpleByAdminDto>> GetAllCategoriesByAdminAsync();
         Task<GetCategoryWithProductsByAdminDto?> GetCategoryByAdminByIdAsync(int id);
         Task<GetCategorySimpleByAdminDto> UpdateCategoryAsync(int id, UpdateCategoryDto dto);
-        Task DeleteCategoryByAdminAsync(int id);
+        Task ToggleCategoryByAdminAsync(int id);
 
         //To clients
         Task<IEnumerable<GetCategorySimpleByClientDto>> GetAllCategoriesByClientAsync();

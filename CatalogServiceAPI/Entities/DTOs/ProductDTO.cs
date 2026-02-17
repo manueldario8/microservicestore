@@ -26,6 +26,7 @@
 
     public record UpdateProductDto(
         string Name,
+        int CategoryId,
         string? Description,
         decimal Price,
         int Stock,

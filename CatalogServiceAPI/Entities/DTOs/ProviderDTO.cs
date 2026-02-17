@@ -13,16 +13,18 @@
         string Name);
 
     public record GetUpdatedProviderDto(
-        string Code,
-        string Name);
+        string Name,
+        string Code);
     public record GetProviderSimpleDto(
         int Id,
         string Name,
-        string Code);
+        string Code,
+        bool StatusActived);
 
 
     public record GetProviderWithProductsDto(
         string Name,
         string Code,
-        IEnumerable<GetProductToSellDto> ProductDto);
+        IEnumerable<GetProductToCheckStockDto> ProductDto,
+        bool StatusActived);
 }

@@ -12,8 +12,8 @@ namespace CatalogServiceAPI.Interfaces
         Task<GetProductToListByAdminDto?> GetProductByAdminById(int id);
         Task<GetProductToListByAdminDto> UpdateProductAsync(int id, UpdateProductDto dto);
         Task UpdateStockAsync(int id, int quantityDelta);
-        Task<bool> ToggleStatusProductAsync(int id);
-        Task DeleteProductAsync(int id);
+        Task ToggleStatusProductAsync(int id);
+        //Task DeleteProductAsync(int id);
 
         //To clients
         Task<IEnumerable<GetProductToListByClientDto>> GetAllProductsByClientAsync();

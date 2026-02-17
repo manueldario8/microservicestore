@@ -1,4 +1,5 @@
 ﻿using CatalogServiceAPI.Data;
+using CatalogServiceAPI.DomainExceptions;
 using CatalogServiceAPI.Entities.DTOs;
 using CatalogServiceAPI.Entities.Models;
 using CatalogServiceAPI.Interfaces;
@@ -12,12 +13,12 @@ namespace CatalogServiceAPI.Services
 
         public async Task<GetProviderCreatedDto> CreateProviderAsync(CreateProviderDto dto)
         {
-            await ValidateProviderAsync(dto.Code, dto.Name);
+            await ValidateProviderAsync(dto.Name, dto.Code);
 
             var provider = new Provider
             {
-                Code = dto.Code,
-                Name = dto.Name
+                Name = dto.Name,
+                Code = dto.Code
             };
 
             await _context.Providers.AddAsync(provider);
@@ -30,7 +31,8 @@ namespace CatalogServiceAPI.Services
         {
             return await _context.Providers
                 .AsNoTracking()
-                .Select(p => new GetProviderSimpleDto(p.Id, p.Code, p.Name))
+                .IgnoreQueryFilters()
+                .Select(p => new GetProviderSimpleDto(p.Id, p.Name, p.Code, p.StatusActived))
                 .ToListAsync();
         }
 
@@ -38,63 +40,54 @@ namespace CatalogServiceAPI.Services
         {
             return await _context.Providers
                 .AsNoTracking()
+                .IgnoreQueryFilters()
                 .Where(p => p.Id == id)
                 .Select(p => new GetProviderWithProductsDto(
-                    p.Code, 
-                    p.Name, 
-                    p.Products.Select(d => new GetProductToSellDto(
+                    p.Name,
+                    p.Code,
+                    p.Products.Select(d => new GetProductToCheckStockDto(
                         d.ProviderCode,
                         d.ProductCode, 
                         d.Name, 
-                        d.Price))))
-                .FirstOrDefaultAsync();
+                        d.Stock)),
+                    p.StatusActived))
+                .FirstOrDefaultAsync() ?? throw new NotFoundException("No se encontró ningún proveedor con ese ID");
         }
 
         public async Task<GetUpdatedProviderDto> UpdateProviderAsync(int id, UpdateProviderDto dto)
         {
-            var existing = await _context.Providers.FindAsync(id) ?? throw new InvalidOperationException("Provider not found.");
+            var existing = await _context.Providers.FindAsync(id) ?? throw new NotFoundException("No se encontró el proveedor");
 
-            await ValidateProviderAsync(existing.Code, dto.Name, id);
-
+            await ValidateProviderAsync(dto.Name, existing.Code, id);
             existing.Name = dto.Name;
 
             await _context.SaveChangesAsync();
-
-            return new GetUpdatedProviderDto(dto.Name, existing.Code);
+            return new GetUpdatedProviderDto(existing.Code, dto.Name);
         }
 
 
-        public async Task<bool> ToggleStatusProviderAsync(int id)
+        public async Task ToggleStatusProviderAsync(int id)
         {
-            var existing = await _context.Providers.FindAsync(id) ?? throw new InvalidOperationException($"Provider not found.");
-
+            var existing = await _context.Providers.FindAsync(id) ?? throw new NotFoundException("No se encontró el proveedor");
             existing.StatusActived = !existing.StatusActived;
 
             await _context.SaveChangesAsync();
-            return existing.StatusActived;
         }
 
-        public async Task DeleteProviderAsync(int id)
-        {
-            var existing = await _context.Providers.FindAsync(id) ?? throw new InvalidOperationException($"Provider not found.");
-            
-            _context.Providers.Remove(existing);
-            await _context.SaveChangesAsync();  
-        }
 
 
         //Internal functions
-        private async Task ValidateProviderAsync(string code, string name, int? id = null)
+        private async Task ValidateProviderAsync(string name, string code, int? id = null)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new InvalidOperationException("The field 'name' cannot be empty");
-            if (string.IsNullOrWhiteSpace(code)) throw new InvalidOperationException("The field 'code' cannot be empty");
+            if (string.IsNullOrWhiteSpace(name)) throw new InvalidOperationException("El nombre no puede estar vacío");
+            if (string.IsNullOrWhiteSpace(code)) throw new InvalidOperationException("El código no puede estar vacío");
 
             var codeInUse = await _context.Providers.AnyAsync(p => p.Code.ToLower() == code.ToLower() && (!id.HasValue || p.Id != id.Value));
 
 
             if (codeInUse)
                 throw new InvalidOperationException(
-                    $"The provider code '{code}' is already used.");
+                    $"El código '{code}' ya está siendo usado por otro proveedor");
         }
 
     }

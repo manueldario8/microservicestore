@@ -15,21 +15,8 @@ namespace CatalogServiceAPI.Controllers
         [HttpPost("adm")]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto)
         {
-            if (dto == null)
-                return BadRequest();
-
-            try
-            {
-                var created = await _categoryService.CreateCategoryAsync(dto);
-
-                return CreatedAtAction(nameof(GetCategoryByIdAdmin), new { id = created.Id }, created);
-
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(new { message = ex.Message });
-            }
-
+            var created = await _categoryService.CreateCategoryAsync(dto);
+            return CreatedAtAction(nameof(GetCategoryByIdAdmin), new { id = created.Id }, created);
         }
 
         [HttpGet("adm")]
@@ -43,42 +30,21 @@ namespace CatalogServiceAPI.Controllers
         public async Task<IActionResult> GetCategoryByIdAdmin(int id)
         {
             var category = await _categoryService.GetCategoryByAdminByIdAsync(id);
-
-            if (category == null)
-                return NotFound();
-
             return Ok(category);
         }
 
         [HttpPut("adm/{id:int}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto dto)
         {
-            if (dto == null)
-                return BadRequest();
-
-            try
-            {
-                var updated = await _categoryService.UpdateCategoryAsync(id, dto);
-                return Ok(updated);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var updated = await _categoryService.UpdateCategoryAsync(id, dto);
+            return Ok(updated);       
         }
 
-        [HttpDelete("adm/{id:int}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        [HttpPut("adm/toggle/{id:int}")]
+        public async Task<IActionResult> ChangeCategoryStatus(int id)
         {
-            try
-            {
-                await _categoryService.DeleteCategoryByAdminAsync(id);
-                return NoContent();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
+            await _categoryService.ToggleCategoryByAdminAsync(id);
+            return NoContent();
         }
 
         /*Endpoints to be used by clients*/
@@ -93,10 +59,6 @@ namespace CatalogServiceAPI.Controllers
         public async Task<IActionResult> GetCategoryByIdClient(int id)
         {
             var category = await _categoryService.GetCategoryByClientByIdAsync(id);
-
-            if (category == null)
-                return NotFound();
-
             return Ok(category);
         }
     }

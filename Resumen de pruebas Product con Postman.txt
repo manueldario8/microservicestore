@@ -1,0 +1,31 @@
+Prueba postman:
+Métodos y errores:
+Productos:
+
+-GET por parte del cliente: funciona, muestra todo lo requerido
+
+-GET por ProviderCode/ProductCode del usuario: funciona, muestra lo necesario para una orden (Falta agregar uno para traer también la foto)
+-Error al pasar códigos inválidos:     "StatusCode": 404,
+    "Message": "Producto no encontrado".
+
+GET por parte del administrador: funciona, muestra lo requerido
+
+-GET por ProviderCode/ProductCode por aprte del admin: funciona, muestra lo necesario para la facturación
+-Error por ID erróneo:    "StatusCode": 404,
+    "Message": "Producto no encontrado"
+
+-GET por ID para búsquedas internas: funciona, viene con un poco más de detalle, podría agregarse status del producto
+-Error al ID null: "StatusCode": 404,
+    "Message": "ID de Producto no encontrado"
+
+-PUT para activar o desactivar un producto: funciona, si desactivo un producto no aparece nibuscándolo por su ID o por codes
+-Error grave, no puedo reactivarlo porque el mismo método que se usa para buscarlo lo ignora
+SOLUCIONADO
+
+-PUT para cambiar categorías refaccionado, funciona por categoría ID, así que seguramente luego en la interfaz tenga que traer el ID para pasarlos en los DTOS
+Comportamiento raro... a chequear
+
+
+ 
+
+

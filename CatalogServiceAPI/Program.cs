@@ -1,5 +1,6 @@
 using CatalogServiceAPI.Data;
 using CatalogServiceAPI.Interfaces;
+using CatalogServiceAPI.Middleware;
 using CatalogServiceAPI.Services;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Builder;
@@ -27,7 +28,7 @@ builder.Services.AddScoped<IImageService, ImageService>();
 
 var app = builder.Build();
 
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

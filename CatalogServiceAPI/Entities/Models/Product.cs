@@ -14,7 +14,7 @@ namespace CatalogServiceAPI.Entities.Models
         public string? Description { get; set; }
         public required decimal Price { get; set; }
         public required int Stock { get; set; }
-        public bool StatusActive { get; set; } = true;
+        public bool StatusActived { get; set; } = true;
         public int CategoryId { get; set; }
 
         [Display(Name = "Image")]

@@ -10,7 +10,8 @@
 
     public record GetCategorySimpleByAdminDto(
         int Id,
-        string Name);
+        string Name,
+        bool StatusActived);
 
     public record GetCategoryWithProductsByAdminDto(
         string Name,

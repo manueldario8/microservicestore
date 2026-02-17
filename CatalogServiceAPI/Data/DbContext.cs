@@ -19,14 +19,25 @@ namespace CatalogServiceAPI.Data
             modelBuilder.Entity<Provider>()
                 .HasIndex(p => p.Code)               
                 .IsUnique();
-                
+
+            modelBuilder.Entity<Provider>()
+            .Property(c => c.StatusActived)
+            .HasDefaultValue(true);
+
+            modelBuilder.Entity<Provider>()
+            .HasQueryFilter(c => c.StatusActived);
+
             //Categories
             modelBuilder.Entity<Category>()
             .HasIndex(c => c.Name)
             .IsUnique();
 
             modelBuilder.Entity<Category>()
-            .Property(c => c.Id);
+            .Property(c => c.StatusActived)
+            .HasDefaultValue(true);
+
+            modelBuilder.Entity<Category>()
+            .HasQueryFilter(c => c.StatusActived);
 
             // Products
             modelBuilder.Entity<Product>()
@@ -49,6 +60,13 @@ namespace CatalogServiceAPI.Data
             modelBuilder.Entity<Product>()
                 .Property(p => p.Price)
                 .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Product>()
+            .Property(c => c.StatusActived)
+            .HasDefaultValue(true);
+
+            modelBuilder.Entity<Product>()
+            .HasQueryFilter(c => c.StatusActived);
         }
 
 
