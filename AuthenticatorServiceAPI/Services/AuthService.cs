@@ -2,6 +2,7 @@
 using AuthenticatorServiceAPI.Entities;
 using AuthenticatorServiceAPI.Entities.DTOs;
 using AuthenticatorServiceAPI.Interfaces;
+using CatalogServiceAPI.DomainExceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -33,7 +34,7 @@ namespace AuthenticatorServiceAPI.Services
 
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == email)
-                ?? throw new InvalidOperationException("Credenciales inválidas");
+                ?? throw new NotFoundException("Credenciales inválidas");
 
             var result = _passwordHasher.VerifyHashedPassword(
                 user,
@@ -42,7 +43,7 @@ namespace AuthenticatorServiceAPI.Services
             );
 
             if (result == PasswordVerificationResult.Failed)
-                throw new InvalidOperationException("Credenciales inválidas");
+                throw new AccessDeniedException("Credenciales inválidas");
 
             var claims = new[]
             {

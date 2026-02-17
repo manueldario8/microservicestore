@@ -2,6 +2,7 @@
 using AuthenticatorServiceAPI.Entities;
 using AuthenticatorServiceAPI.Entities.DTOs;
 using AuthenticatorServiceAPI.Interfaces;
+using CatalogServiceAPI.DomainExceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,13 +42,13 @@ namespace AuthenticatorServiceAPI.Services
     private async Task ValidateUser(string email, string password)
     {
 
-            if (string.IsNullOrEmpty(email)) throw new InvalidOperationException("Se requiere un email para continuar");
-            if (string.IsNullOrEmpty(password)) throw new InvalidOperationException("La contraseña no puede estar vacía");
-            if (password.Length < 6) throw new InvalidOperationException("La contraseña no puede tener menos de 6 caracteres");
+            if (string.IsNullOrEmpty(email)) throw new ValidationException("Se requiere un email para continuar");
+            if (string.IsNullOrEmpty(password)) throw new ValidationException("La contraseña no puede estar vacía");
+            if (password.Length < 6) throw new ValidationException("La contraseña no puede tener menos de 6 caracteres");
 
             var emailUsed = await _context.Users.AnyAsync(p => p.Email == email);
             if (emailUsed)
-                throw new InvalidOperationException($"El mail '{email}' ya está asignado a otro usuario.");
+                throw new ConflictException($"El mail '{email}' ya está asignado a otro usuario.");
         }
     }
 }

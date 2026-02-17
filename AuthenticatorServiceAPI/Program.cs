@@ -1,6 +1,7 @@
 using AuthenticatorServiceAPI.Data;
 using AuthenticatorServiceAPI.Entities;
 using AuthenticatorServiceAPI.Interfaces;
+using AuthenticatorServiceAPI.Middleware;
 using AuthenticatorServiceAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -43,6 +44,7 @@ builder.Services.AddScoped<PasswordHasher<User>>();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

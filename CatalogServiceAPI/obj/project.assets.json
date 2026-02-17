@@ -3092,11 +3092,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\CatalogServiceAPI.csproj",
+      "projectUniqueName": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogServiceAPI\\CatalogServiceAPI.csproj",
       "projectName": "CatalogServiceAPI",
-      "projectPath": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\CatalogServiceAPI.csproj",
+      "projectPath": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogServiceAPI\\CatalogServiceAPI.csproj",
       "packagesPath": "C:\\Users\\manue\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogService\\CatalogServiceAPI\\obj\\",
+      "outputPath": "C:\\Users\\manue\\OneDrive\\Desktop\\MicroService\\CatalogServiceAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
