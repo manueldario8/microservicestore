@@ -13,7 +13,7 @@ namespace CatalogServiceAPI.Controllers
         private readonly ICategoryService _categoryService = categoryService;
 
         /*Endpoints to be used by admins*/
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("adm")]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto)
         {
@@ -21,7 +21,7 @@ namespace CatalogServiceAPI.Controllers
             return CreatedAtAction(nameof(GetCategoryByIdAdmin), new { id = created.Id }, created);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("adm")]
         public async Task<IActionResult> GetAllCategoriesByAdmins()
         {

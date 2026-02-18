@@ -4,7 +4,6 @@ using CatalogServiceAPI.Middleware;
 using CatalogServiceAPI.Services;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -20,13 +19,13 @@ builder.Services.AddDbContext<CatalogDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
+
 //Cloudinary setup
 var cloudinaryUrl = builder.Configuration["CloudinarySettings:Url"];
 builder.Services.AddSingleton(new Cloudinary(cloudinaryUrl));
 
 //Connection to AuthService
 var jwt = builder.Configuration.GetSection("Jwt");
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -46,6 +45,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+//CORS
+var MyAllowOrigins = "_myAllowOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowOrigins,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
+
 // Services
 builder.Services.AddScoped<IProviderService, ProviderService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -61,4 +75,5 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors(MyAllowOrigins);
 app.Run();

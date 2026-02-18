@@ -7,7 +7,7 @@ namespace CatalogServiceAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]/adm")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class ProviderController(IProviderService providerService) : ControllerBase
     {
         private readonly IProviderService _providerService = providerService;
